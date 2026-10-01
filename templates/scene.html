@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="story:duration" content="3">
+  <link rel="stylesheet" href="/runtime/story.css">
+  <link rel="stylesheet" href="../theme.css">
+  <script src="/runtime/story.js"></script>
+  <style>
+    body { display: grid; place-items: center; }
+    h1 {
+      margin: 0;
+      font-size: 120px;
+      font-weight: 650;
+      letter-spacing: -0.045em;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{title}}</h1>
+  <script>
+    Story.scene((tl) => {
+      tl.from('h1', { y: 40, opacity: 0, filter: 'blur(12px)', duration: 0.9, ease: 'expo.out' }, 0.2);
+    });
+  </script>
+</body>
+</html>

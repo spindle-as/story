@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="story:duration" content="3.4">
+  <meta name="story:poster" content="3.0">
+  <link rel="stylesheet" href="/runtime/story.css">
+  <link rel="stylesheet" href="../theme.css">
+  <script src="/runtime/story.js"></script>
+  <style>
+    body { background: #0a0a0a; color: #fafafa; }
+    h1 {
+      position: absolute;
+      top: 190px;
+      left: 0;
+      right: 0;
+      margin: 0;
+      text-align: center;
+      font-size: 132px;
+      font-weight: 650;
+      letter-spacing: -0.055em;
+    }
+    h1 em { font-family: var(--font-serif); font-weight: 400; font-size: 1.1em; letter-spacing: -0.02em; }
+
+    .frames {
+      position: absolute;
+      left: 210px;
+      right: 210px;
+      top: 450px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .frame {
+      aspect-ratio: 16 / 9;
+      border-radius: 8px;
+      background: #1c1c1c;
+      box-shadow: inset 0 0 0 1.5px #2a2a2a;
+      position: relative;
+      overflow: hidden;
+    }
+    .frame i { position: absolute; left: 18%; right: 18%; top: 38%; height: 12%; border-radius: 3px; background: #fafafa; }
+    .frame .lit { position: absolute; inset: 0; background: linear-gradient(160deg, #fff, #e9e9e9); opacity: 0; }
+    .frame .lit i { background: #111; }
+
+    .bar { position: absolute; left: 210px; right: 210px; top: 610px; height: 8px; border-radius: 8px; background: #262626; overflow: hidden; }
+    .bar b { position: absolute; inset: 0; background: #fafafa; transform-origin: 0 50%; transform: scaleX(0); }
+    .meta {
+      position: absolute;
+      left: 210px;
+      right: 210px;
+      top: 650px;
+      display: flex;
+      justify-content: space-between;
+      font: 500 30px var(--font-mono);
+      letter-spacing: -0.03em;
+      color: #8a8a8a;
+    }
+    .meta .count { color: #fafafa; }
+
+    .file {
+      position: absolute;
+      left: 50%;
+      top: 790px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 30px 20px 22px;
+      border-radius: 20px;
+      background: #fafafa;
+      color: #0a0a0a;
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .file .ok { width: 44px; height: 44px; border-radius: 50%; background: #16a34a; display: grid; place-items: center; }
+    .file span { color: #737373; font-weight: 450; }
+  </style>
+</head>
+<body>
+  <h1>Every frame, <em>rendered</em></h1>
+  <div class="frames"></div>
+  <div class="bar"><b></b></div>
+  <div class="meta"><span><span class="count">0</span> / 1,260 frames</span><span>headless Chromium → ffmpeg</span></div>
+  <div class="file">
+    <span class="ok"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+    storyboard-teaser.mp4 <span>1080p · 60 fps · H.264</span>
+  </div>
+
+  <script>
+    Story.scene((tl, { gsap, $, $$ }) => {
+      const grid = $('.frames');
+      const rand = Story.random(7);
+      for (let i = 0; i < 12; i++) {
+        const w = 40 + rand() * 30;
+        grid.insertAdjacentHTML('beforeend', `<div class="frame"><i style="right:${100 - w - 18}%"></i><div class="lit"><i style="right:${100 - w - 18}%"></i></div></div>`);
+      }
+      gsap.set('.file', { xPercent: -50 });
+
+      const words = new SplitText('h1', { type: 'words' }).words;
+      tl.from(words, { y: 60, opacity: 0, filter: 'blur(16px)', duration: 0.95, ease: 'expo.out', stagger: 0.08 }, 0.05);
+      tl.from('.frame', { y: 30, opacity: 0, duration: 0.7, ease: 'expo.out', stagger: 0.03 }, 0.25);
+      tl.from(['.bar', '.meta'], { opacity: 0, y: 16, duration: 0.6, ease: 'expo.out', stagger: 0.06 }, 0.45);
+
+      const RENDER = { start: 0.7, duration: 1.9 };
+      tl.to('.bar b', { scaleX: 1, duration: RENDER.duration, ease: 'power1.inOut' }, RENDER.start);
+      tl.add(Story.count('.count', 0, 1260, { duration: RENDER.duration, ease: 'power1.inOut' }), RENDER.start);
+      tl.to('.frame .lit', { opacity: 1, duration: 0.12, ease: 'none', stagger: RENDER.duration / 12 }, RENDER.start + 0.05);
+
+      tl.from('.file', { y: 30, opacity: 0, scale: 0.94, filter: 'blur(8px)', duration: 0.7, ease: 'expo.out' }, 2.62);
+      tl.from('.file .ok', { scale: 0, rotate: -40, duration: 0.5, ease: 'back.out(2)' }, 2.72);
+    });
+  </script>
+</body>
+</html>

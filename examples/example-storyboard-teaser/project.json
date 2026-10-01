@@ -1,0 +1,16 @@
+{
+  "name": "Example: Storyboard teaser",
+  "codebase": ".",
+  "width": 1920,
+  "height": 1080,
+  "fps": 60,
+  "scenes": [
+    { "id": "title", "title": "Title" },
+    { "id": "prompt", "title": "Prompt" },
+    { "id": "anatomy", "title": "Anatomy" },
+    { "id": "timeline", "title": "Millisecond" },
+    { "id": "render", "title": "Render" },
+    { "id": "logo", "title": "Logo lockup" }
+  ],
+  "createdAt": "2026-10-01T08:00:00.000Z"
+}

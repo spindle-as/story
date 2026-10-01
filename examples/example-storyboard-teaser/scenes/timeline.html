@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="story:duration" content="3.8">
+  <meta name="story:poster" content="2.8">
+  <link rel="stylesheet" href="/runtime/story.css">
+  <link rel="stylesheet" href="../theme.css">
+  <script src="/runtime/story.js"></script>
+  <style>
+    h1 {
+      position: absolute;
+      top: 170px;
+      left: 0;
+      right: 0;
+      margin: 0;
+      text-align: center;
+      font-size: 132px;
+      font-weight: 650;
+      letter-spacing: -0.055em;
+    }
+    h1 em { font-family: var(--font-serif); font-weight: 400; font-size: 1.1em; letter-spacing: -0.02em; }
+
+    /* Transport.svelte, at 2.4× */
+    .transport {
+      position: absolute;
+      left: 160px;
+      right: 160px;
+      top: 470px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      padding: 0 44px;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 0 0 2px #ececec, 0 30px 70px -34px rgb(0 0 0 / 0.25);
+    }
+    .seg { display: flex; padding: 6px; border-radius: 16px; background: #f2f2f2; font-size: 26px; font-weight: 600; color: #8a8a8a; }
+    .seg span { padding: 10px 20px; border-radius: 11px; }
+    .seg span.on { background: #0a0a0a; color: #fff; }
+    .play { width: 84px; height: 84px; border-radius: 50%; background: #0a0a0a; display: grid; place-items: center; flex-shrink: 0; }
+    .play svg { width: 30px; margin-left: 5px; }
+    .time { width: 260px; font: 500 34px var(--font-mono); letter-spacing: -0.03em; flex-shrink: 0; }
+    .time span { color: #a3a3a3; }
+    .track { position: relative; flex: 1; height: 100%; }
+    .rail { position: absolute; left: 0; right: 0; top: 66px; height: 6px; border-radius: 6px; background: #e8e8e8; }
+    .fill { position: absolute; left: 0; top: 66px; height: 6px; border-radius: 6px; background: #1a1a1a; width: 0; }
+    .beat { position: absolute; top: 46px; width: 3px; margin-left: -1.5px; height: 8px; border-radius: 2px; background: #c4b5fd; transform-origin: 50% 100%; }
+    .beat.down { height: 12px; top: 42px; background: var(--beat); }
+    .tick { position: absolute; top: 92px; font: 20px var(--font-mono); color: #a3a3a3; transform: translateX(-50%); }
+    .head {
+      position: absolute;
+      top: 44px;
+      width: 12px;
+      height: 50px;
+      margin-left: -6px;
+      border-radius: 8px;
+      background: var(--playhead);
+      box-shadow: 0 0 0 4px #fff, 0 4px 14px rgb(59 130 246 / 0.4);
+    }
+
+    .ms {
+      position: absolute;
+      top: 680px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 34px;
+      color: var(--muted);
+      letter-spacing: -0.02em;
+    }
+    .ms b { color: var(--fg); font-weight: 600; font-family: var(--font-mono); letter-spacing: -0.04em; }
+  </style>
+</head>
+<body>
+  <h1>Down to the <em>millisecond</em></h1>
+
+  <div class="transport">
+    <div class="seg"><span class="on">This scene</span><span>Whole video</span></div>
+    <div class="play"><svg viewBox="0 0 24 24" fill="#fff"><path d="M6 4l15 8-15 8z"/></svg></div>
+    <div class="time"><b class="now">0.00</b> <span>/ 3.32s</span></div>
+    <div class="track">
+      <div class="rail"></div>
+      <div class="fill"></div>
+      <div class="head"></div>
+    </div>
+  </div>
+
+  <p class="ms">“Land the headline on the downbeat at <b>1.512s</b>”</p>
+
+  <script>
+    Story.scene((tl, { gsap, $ }) => {
+      const DURATION = 3.32;
+      const track = $('.track');
+      const width = track.getBoundingClientRect().width;
+      const at = (t) => (t / DURATION) * width;
+
+      // Beat grid at 128 BPM; every fourth beat is a downbeat.
+      const beats = [];
+      for (let i = 0, t = 0.1; t < DURATION; i++, t += 60 / 128) {
+        const el = document.createElement('div');
+        el.className = `beat${i % 4 === 0 ? ' down' : ''}`;
+        el.style.left = `${at(t)}px`;
+        track.appendChild(el);
+        beats.push({ el, t });
+      }
+      for (let s = 0; s <= 3; s++) {
+        const el = document.createElement('div');
+        el.className = 'tick';
+        el.style.left = `${at(s)}px`;
+        el.textContent = `${s}s`;
+        track.appendChild(el);
+      }
+
+      const playhead = { t: 0 };
+      const now = $('.now');
+      Story.onFrame(() => {
+        const x = at(playhead.t);
+        gsap.set('.head', { x });
+        gsap.set('.fill', { width: x });
+        now.textContent = playhead.t.toFixed(2);
+        // Beats swell as the playhead passes them.
+        for (const b of beats) {
+          const d = playhead.t - b.t;
+          const pulse = d >= 0 && d < 0.35 ? 1 - d / 0.35 : 0;
+          b.el.style.transform = `scaleY(${1 + pulse * 1.6})`;
+        }
+      });
+
+      const words = new SplitText('h1', { type: 'words' }).words;
+      tl.from(words, { y: 60, opacity: 0, filter: 'blur(16px)', duration: 0.95, ease: 'expo.out', stagger: 0.08 }, 0.08);
+      tl.from('.transport', { y: 80, opacity: 0, scale: 0.97, filter: 'blur(10px)', duration: 1.0, ease: 'expo.out' }, 0.3);
+      tl.from('.beat', { scaleY: 0, duration: 0.5, ease: 'expo.out', stagger: 0.025 }, 0.75);
+      tl.to(playhead, { t: 1.512, duration: 1.1, ease: 'power3.inOut' }, 0.9);
+      tl.to(playhead, { t: 1.512 + 1 / 60, duration: 0.4, ease: 'power1.inOut' }, 2.15);
+      tl.from('.ms', { y: 24, opacity: 0, filter: 'blur(8px)', duration: 0.8, ease: 'expo.out' }, 1.95);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "voice": null,
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.5,
+    "similarity": 0.75,
+    "style": 0.15,
+    "speed": 1
+  },
+  "direction": "Warm, confident and unhurried, like an Apple product film. Short sentences, a small smile in the voice.",
+  "lines": [
+    {
+      "id": "vo-title",
+      "scene": "title",
+      "t": 0.9,
+      "text": "Your product already has a story.",
+      "note": "after 'Your code, on camera' lands"
+    },
+    {
+      "id": "vo-prompt",
+      "scene": "prompt",
+      "t": 0.6,
+      "text": "Describe a moment. Claude builds it from your codebase.",
+      "note": "while the prompt is typed"
+    },
+    {
+      "id": "vo-anatomy",
+      "scene": "anatomy",
+      "t": 1.0,
+      "text": "Live preview, timeline and Claude, side by side.",
+      "note": "as the editor comes apart"
+    },
+    {
+      "id": "vo-timeline",
+      "scene": "timeline",
+      "t": 0.9,
+      "text": "Direct every moment, frame by frame.",
+      "note": "over the playhead move"
+    },
+    {
+      "id": "vo-render",
+      "scene": "render",
+      "t": 0.6,
+      "text": "Then export it, ready to ship.",
+      "note": "while frames render"
+    },
+    {
+      "id": "vo-logo",
+      "scene": "logo",
+      "t": 0.85,
+      "text": "Storyboard. Prompt every scene.",
+      "note": "name with the wordmark, tagline as it appears"
+    }
+  ],
+  "gain": 1,
+  "duck": 0.35,
+  "captions": true
+}

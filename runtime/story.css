@@ -1,0 +1,60 @@
+/* spindle/story scene base styles. Served as /runtime/story.css. */
+@import url('/runtime/fonts/inter/index.css');
+@import url('/runtime/fonts/geist/index.css');
+@import url('/runtime/fonts/geist-mono/index.css');
+@import url('/runtime/fonts/jetbrains-mono/index.css');
+@import url('/runtime/fonts/instrument-serif/index.css');
+@import url('/runtime/fonts/instrument-serif/400-italic.css');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: var(--story-w, 1920px);
+  height: var(--story-h, 1080px);
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+  background: #fff;
+  color: #0a0a0a;
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+img, svg, video, canvas { display: block; max-width: none; }
+
+.story-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  pointer-events: none;
+  transform-origin: 6px 4px;
+  margin: -4px 0 0 -6px;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.25));
+}
+
+.story-cursor-ring {
+  position: absolute;
+  left: -14px;
+  top: -16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  color: rgb(0 0 0 / 0.5);
+}
+
+.story-caret::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background: currentColor;
+}

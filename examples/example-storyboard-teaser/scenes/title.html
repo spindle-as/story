@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="story:duration" content="3.2">
+  <meta name="story:poster" content="2.2">
+  <link rel="stylesheet" href="/runtime/story.css">
+  <link rel="stylesheet" href="../theme.css">
+  <script src="/runtime/story.js"></script>
+  <style>
+    body {
+      display: grid;
+      place-items: center;
+      background: radial-gradient(ellipse 60% 55% at 50% 45%, #fff 0%, var(--bg) 100%);
+    }
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 96px 96px;
+      background-position: center;
+      mask-image: radial-gradient(ellipse 55% 60% at 50% 50%, #000 0%, transparent 100%);
+    }
+    h1 {
+      position: relative;
+      margin: 0;
+      text-align: center;
+      line-height: 0.98;
+    }
+    .l1 {
+      display: block;
+      font-size: 172px;
+      font-weight: 650;
+      letter-spacing: -0.055em;
+    }
+    .l2 {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 204px;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <h1><span class="l1">Your code,</span><span class="l2">on camera.</span></h1>
+  <script>
+    Story.scene((tl) => {
+      const words = new SplitText('.l1', { type: 'words' }).words;
+      const chars = new SplitText('.l2', { type: 'chars' }).chars;
+
+      tl.fromTo('.grid', { opacity: 0, scale: 1.12 }, { opacity: 0.55, scale: 1, duration: 2.6, ease: 'power2.out' }, 0);
+      tl.fromTo('h1', { scale: 0.97 }, { scale: 1.03, duration: 3.2, ease: 'none' }, 0);
+      tl.from(words, { y: 80, opacity: 0, filter: 'blur(18px)', duration: 1.0, ease: 'expo.out', stagger: 0.09 }, 0.12);
+      tl.from(chars, { y: 56, opacity: 0, filter: 'blur(14px)', duration: 0.9, ease: 'expo.out', stagger: 0.035 }, 0.62);
+      tl.to('h1', { y: -24, opacity: 0, filter: 'blur(12px)', duration: 0.32, ease: 'power2.in' }, 2.88);
+    });
+  </script>
+</body>
+</html>

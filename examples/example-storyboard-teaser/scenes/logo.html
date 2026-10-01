@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="story:duration" content="3.4">
+  <meta name="story:poster" content="2.8">
+  <link rel="stylesheet" href="/runtime/story.css">
+  <link rel="stylesheet" href="../theme.css">
+  <script src="/runtime/story.js"></script>
+  <style>
+    body { display: grid; place-items: center; background: radial-gradient(ellipse 50% 50% at 50% 50%, #fff 0%, var(--bg) 100%); }
+    .lockup { display: flex; flex-direction: column; align-items: center; }
+    .mark-row { display: flex; align-items: center; gap: 44px; }
+    .icon {
+      width: 168px;
+      height: 168px;
+      border-radius: 44px;
+      background: linear-gradient(160deg, #262626, #0a0a0a);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.12), 0 30px 60px -20px rgb(0 0 0 / 0.45);
+    }
+    .icon svg { width: 96px; height: 96px; overflow: visible; }
+    .word {
+      font-size: 168px;
+      font-weight: 680;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      padding-bottom: 12px;
+    }
+    .tag {
+      margin-top: 40px;
+      font-size: 40px;
+      color: var(--muted);
+      letter-spacing: -0.02em;
+    }
+    .tag em { font-family: var(--font-serif); font-size: 1.18em; color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="lockup">
+    <div class="mark-row">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path class="board" d="M4 11v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8H4Z"/>
+          <g class="clapper">
+            <path d="M4 11l-.88-2.87a2 2 0 0 1 1.33-2.5l11.48-3.5a2 2 0 0 1 2.5 1.32l.87 2.87L4 11Z"/>
+            <path d="m6.6 4.99 3.38 4.2"/>
+            <path d="m11.86 3.38 3.38 4.2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="word">Storyboard</div>
+    </div>
+    <div class="tag">Prompt <em>every</em> scene.</div>
+  </div>
+  <script>
+    Story.scene((tl, { gsap }) => {
+      const chars = new SplitText('.word', { type: 'chars' }).chars;
+      gsap.set('.clapper', { transformOrigin: '4px 11px' });
+
+      tl.from('.icon', { scale: 0.55, opacity: 0, filter: 'blur(16px)', rotate: -8, duration: 1.0, ease: 'expo.out' }, 0.1);
+      tl.from('.icon svg .board', { drawSVG: 0, duration: 0.7, ease: 'power2.inOut' }, 0.3);
+      tl.from('.clapper', { rotate: -26, duration: 0.5, ease: 'power3.out' }, 0.62);
+      tl.to('.clapper', { rotate: -18, duration: 0.14, ease: 'power2.out' }, 1.12);
+      tl.to('.clapper', { rotate: 0, duration: 0.16, ease: 'power3.in' }, 1.26);
+      tl.to('.icon', { scale: 0.96, duration: 0.08, ease: 'power2.out' }, 1.42);
+      tl.to('.icon', { scale: 1, duration: 0.3, ease: 'power2.out' }, 1.5);
+
+      tl.from(chars, { x: -30, opacity: 0, filter: 'blur(12px)', duration: 0.8, ease: 'expo.out', stagger: 0.03 }, 0.45);
+      tl.from('.tag', { y: 20, opacity: 0, filter: 'blur(8px)', duration: 0.9, ease: 'expo.out' }, 1.45);
+      tl.fromTo('.lockup', { scale: 0.985 }, { scale: 1.02, duration: 3.4, ease: 'none' }, 0);
+
+      // Sound design for the soundtrack: a soft hit as the mark lands, a click as the clapper closes.
+      Story.sound('impact', 0.25, { gain: 0.35 });
+      Story.sound('click', 1.42, { gain: 0.5 });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+@import '@fontsource-variable/dm-sans';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ms-madi';
+@import 'tailwindcss';
+
+/* Spindle brand palette. Surfaces step up from the brand background; text and
+   lines come straight from the guidelines. */
+@theme {
+  --font-sans: 'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-script: 'Ms Madi', cursive;
+
+  --color-ink: #11130f;
+  --color-panel: #161912;
+  --color-raised: #1e221a;
+  --color-line: #33392c;
+  --color-line-strong: #4a5240;
+  --color-faint: #70766a;
+  --color-muted: #a0a696;
+  --color-fg-soft: #cfd1c6;
+  --color-fg: #eeeee7;
+  --color-spindle: #c4ff48;
+  --color-spindle-hover: #d3ff78;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--color-spindle);
+  color: var(--color-ink);
+}
+
+button:not(:disabled),
+[role='button'] {
+  cursor: pointer;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+
+/* The wordmark: DM Sans 550 with tight tracking, per the Spindle guidelines. */
+.wordmark {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  letter-spacing: -0.085em;
+  line-height: 1;
+}
+
+/* The signature. Only ever "by jsj". */
+.signature {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  display: inline-block;
+  transform: rotate(-7deg);
+}
+
+.prose-chat p + p,
+.prose-chat p + ul,
+.prose-chat ul + p {
+  margin-top: 0.75em;
+}
+.prose-chat ul {
+  list-style: disc;
+  padding-left: 1.2em;
+}
+.prose-chat a {
+  color: var(--color-spindle);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-chat code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--color-ink);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
+}
+.prose-chat pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--color-ink);
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  margin: 0.75em 0;
+}
+.prose-chat pre code {
+  border: 0;
+  padding: 0;
+  background: none;
+}
